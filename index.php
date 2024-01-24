@@ -1,8 +1,8 @@
 <?php
 
-function phpInfo()
+function php_info()
 {
   phpInfo();
 }  
 
-phpInfo();
+php_info();
