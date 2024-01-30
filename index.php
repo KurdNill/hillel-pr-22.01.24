@@ -10,7 +10,9 @@ require_once ROOT . 'classes/ValueObject.php';
 
 
 
-$dsn = 'mysql:host=mysql;dbname=php_advanced';
+$dsn = 'mysql:host=mysql_db;dbname=php_advanced';
 $pdo = new PDO($dsn, 'root', 'secret');
 
 var_dump($pdo);
+
+echo 1;

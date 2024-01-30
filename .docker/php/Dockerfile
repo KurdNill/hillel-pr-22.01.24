@@ -1,6 +1,6 @@
-FROM php:8.2.6-apache
+FROM php:8.3-apache
 
-RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install -j$(nproc) pdo_mysql
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
