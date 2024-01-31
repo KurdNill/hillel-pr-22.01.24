@@ -24,7 +24,7 @@ services:
       - php_advanced
 
   adminer:
-    image: adminer:4.8.1
+    image: adminer:4.8.0
     restart: always
     ports:
       - "8082:8080"
