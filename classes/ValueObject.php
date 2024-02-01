@@ -13,14 +13,23 @@ class ValueObject
         $this->setBlue($blue);
     }
 
+    /*
+        Валідацію краще винести в окремий метод, бо вона використовується тричі,
+        щоб не дублювати код, краще таке мати в окремому методі :)
+    */
+    protected function validate(int $color)
+    {
+        if ($color < 0 || $color > 255) {
+            throw new Exception('Color is invalid');
+        }
+    }
+    
     /**
      * @param int $blue
      */
     public function setBlue(int $blue): void
     {
-        if ($blue < 0 || $blue > 255) {
-            throw new Exception('Color is invalid');
-        }
+        $this->validate($blue);
         $this->blue = $blue;
     }
 
@@ -37,9 +46,7 @@ class ValueObject
      */
     public function setGreen(int $green): void
     {
-        if ($green < 0 || $green > 255) {
-            throw new Exception('Color is invalid');
-        }
+        $this->validate($green);
         $this->green = $green;
     }
 
@@ -56,9 +63,7 @@ class ValueObject
      */
     public function setRed(int $red): void
     {
-        if ($red < 0 || $red > 255) {
-            throw new Exception('Color is invalid');
-        }
+        $this->validate($red);
         $this->red = $red;
     }
 
@@ -72,19 +77,29 @@ class ValueObject
 
     public function equals(ValueObject $obj1, ValueObject $obj2): bool
     {
-        if (
-            $obj1->getRed() === $obj2->getRed() &&
-            $obj1->getGreen() === $obj2->getGreen() &&
-            $obj1->getBlue() === $obj2->getBlue()
-        ) {
-            return true;
-        }
-        return false;
+        // if (
+            // $obj1->getRed() === $obj2->getRed() &&
+            // $obj1->getGreen() === $obj2->getGreen() &&
+            // $obj1->getBlue() === $obj2->getBlue()
+        // ) {
+        //     return true;
+        // }
+        // return false;
+
+        // Тут можна простіше
+        return $obj1->getRed() === $obj2->getRed() && $obj1->getGreen() === $obj2->getGreen() && $obj1->getBlue() === $obj2->getBlue();
     }
 
     public static function random(): ValueObject
     {
-        return $color = new ValueObject(
+        // $color = не потрібно
+        // return $color = new ValueObject(
+        //     rand(0, 255),
+        //     rand(0, 255),
+        //     rand(0, 255)
+        // );
+        
+        return new ValueObject(
             rand(0, 255),
             rand(0, 255),
             rand(0, 255)
