@@ -22,13 +22,6 @@ services:
       - "80:80"
     networks:
       - php_advanced
-
-  adminer:
-    image: adminer:4.8.0
-    restart: always
-    ports:
-      - "8081:8080"
-
   mysql_db:
     image: "mysql:8"
     restart: always
