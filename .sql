@@ -1,0 +1,46 @@
+CREATE TABLE `parks`
+(
+    `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `address` VARCHAR(250) NOT NULL,
+    `deleted` TINYINT(1) DEFAULT 0
+);
+
+CREATE TABLE `cars`
+(
+    `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `park_id` INT UNSIGNED DEFAULT NULL,
+    `model` VARCHAR(150) NOT NULL,
+    `price` TINYINT(150) NOT NULL,
+    `deleted` TINYINT(1) DEFAULT 0,
+    FOREIGN KEY (`park_id`) REFERENCES `parks`(`id`) ON DELETE SET NULL
+);
+
+CREATE TABLE `drivers`
+(
+    `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `car_id` INT UNSIGNED NOT NULL,
+    `name` VARCHAR(150) NOT NULL,
+    `phone` VARCHAR(150) NOT NULL,
+    `deleted` TINYINT(1) DEFAULT 0,
+    FOREIGN KEY (`car_id`) REFERENCES `cars`(`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `customers`
+(
+    `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(150) DEFAULT NULL,
+    `phone` VARCHAR(150) NOT NULL
+);
+
+CREATE TABLE `orders`
+(
+    `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `customer_id` INT UNSIGNED NOT NULL,
+    `driver_id` INT UNSIGNED NOT NULL,
+    `started_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `finished_at` TIMESTAMP DEFAULT NULL,
+    `total` TINYINT(150) NOT NULL,
+    FOREIGN KEY (`customer_id`) REFERENCES `customers`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`driver_id`) REFERENCES `drivers`(`id`) ON DELETE CASCADE
+);
+
