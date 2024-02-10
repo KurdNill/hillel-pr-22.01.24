@@ -18,6 +18,26 @@ require_once ROOT . 'classes/WithDateAndDetails.php';
 require_once ROOT . 'classes/Logger.php';
 require_once ROOT . 'vendor/autoload.php';
 
+interface Food
+{
+    public function eat(): void;
+}
 
-$logger = new Logger(new Raw(), new BySms());
-$logger->log('Emergency error! Please fix me!');
+interface Flight
+{
+    public function fly(): void;
+}
+
+class Swallow implements Food, Flight
+{
+    public function eat(): void
+    { ... }
+    public function fly(): void
+    { ... }
+}
+
+class Ostrich implements Food
+{
+    public function eat(): void
+    { ... }
+}
