@@ -18,26 +18,33 @@ require_once ROOT . 'classes/WithDateAndDetails.php';
 require_once ROOT . 'classes/Logger.php';
 require_once ROOT . 'vendor/autoload.php';
 
-interface Food
+
+interface Database
 {
-    public function eat(): void;
+    public function getData(): string;
+}
+class Mysql implements Database
+{
+    public function getData(): string
+    {
+        return 'some data from database';
+    }
 }
 
-interface Flight
+class Controller
 {
-    public function fly(): void;
+    private Database $adapter;
+
+    public function __construct(Database $db)
+    {
+        $this->adapter = $db;
+    }
+
+    public function getData(): string
+    {
+        return $this->adapter->getData();
+    }
 }
 
-class Swallow implements Food, Flight
-{
-    public function eat(): void
-    { ... }
-    public function fly(): void
-    { ... }
-}
-
-class Ostrich implements Food
-{
-    public function eat(): void
-    { ... }
-}
+$controller = new Controller(new Mysql);
+echo $controller->getData();
