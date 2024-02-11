@@ -17,34 +17,3 @@ require_once ROOT . 'classes/WithDate.php';
 require_once ROOT . 'classes/WithDateAndDetails.php';
 require_once ROOT . 'classes/Logger.php';
 require_once ROOT . 'vendor/autoload.php';
-
-
-interface Database
-{
-    public function getData(): string;
-}
-class Mysql implements Database
-{
-    public function getData(): string
-    {
-        return 'some data from database';
-    }
-}
-
-class Controller
-{
-    private Database $adapter;
-
-    public function __construct(Database $db)
-    {
-        $this->adapter = $db;
-    }
-
-    public function getData(): string
-    {
-        return $this->adapter->getData();
-    }
-}
-
-$controller = new Controller(new Mysql);
-echo $controller->getData();
