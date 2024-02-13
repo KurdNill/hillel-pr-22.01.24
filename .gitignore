@@ -3,3 +3,5 @@ xdebug.ini
 /vendor/
 composer.json
 composer.lock
+FactoryMethod.php
+FactoryMethod2.php
