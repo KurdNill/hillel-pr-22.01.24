@@ -5,3 +5,9 @@ composer.json
 composer.lock
 FactoryMethod.php
 FactoryMethod2.php
+routes/
+enums/
+core/
+configs/
+Adapter.php
+Adapter2.php
