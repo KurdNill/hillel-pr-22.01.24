@@ -1,5 +1,3 @@
 .idea
 xdebug.ini
 /vendor/
-composer.json
-composer.lock

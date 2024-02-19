@@ -1,0 +1,19 @@
+{
+    "name": "root/html",
+    "autoload": {
+        "psr-4": {
+            "Core\\": "coRe/",
+            "Enums\\": "ENUMS/",
+            "App\\": "ApP/"
+        },
+        "files": [
+            "configs/constants.php",
+            "routes/api.php",
+            "core/helpers.php"
+        ]
+    },
+    "require": {
+        "larapack/dd": "^1.1",
+        "ext-pdo": "*"
+    }
+}
