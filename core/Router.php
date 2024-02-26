@@ -4,13 +4,14 @@ namespace Core;
 
 use Core\Traits\HttpMethods;
 use Enums\HTTP;
+use ReflectionMethod;
 
 class Router
 {
     use HttpMethods;
 
-    private array $routes = [], $params = [];
-    protected static ?Router $instance = null;
+    protected static Router|null $instance = null;
+    protected array $routes = [], $params = [];
     protected string $currentRoute;
     protected array $convertTypes = [
         'd' => 'int',
@@ -19,8 +20,7 @@ class Router
 
     static public function getInstance(): static
     {
-        //if (is_null())
-        if (!isset(static::$instance)) {
+        if (is_null(static::$instance)) {
             static::$instance = new self;
         }
 
@@ -31,11 +31,12 @@ class Router
     public function __call($name, array $args)
     {
         $methodName = 'set' . ucfirst($name);
+
         if (!method_exists($this, $methodName)) {
             throw new \Exception("Method [$methodName] does not exists in Router class");
         }
 
-        $method = new \ReflectionMethod($this::class, $methodName);
+        $method = new ReflectionMethod($this::class, $methodName);
 
         if ($method->getReturnType() !== 'void') {
             return call_user_func_array([$this, $methodName], $args);
@@ -83,7 +84,7 @@ protected function buildParams(string $route, array $matches, array $params): ar
     preg_match_all('/\(\?P<[\w]+>(\\\\)?([\w\.][\+]*)\)/', $route, $types);
     $matches = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
 
-    if (isset($types)) {
+    if (!empty($types)) {
         $lastKey = array_key_last($types);
         $step = 0;
         $types[$lastKey] = array_map(fn($value) => str_replace('+', '', $value), $types[$lastKey]);
@@ -125,12 +126,19 @@ protected function buildParams(string $route, array $matches, array $params): ar
             if ($controller->before($action, $router->params)) {
                 $response = call_user_func_array([$controller, $action], $router->params);
                 $controller->after($action);
+
+                if ($response) {
+                    return \Core\json_response($response['code'], [
+                        'data' => $response['body'],
+                        'errors' => $response['errors']
+                    ]);
+                }
             }
         }
 
-        return \Core\json_response($response['code'], [
-            'data' => $response['body'],
-            'errors' => $response['errors']
+        return \Core\json_response(500, [
+            'data' => [],
+            'errors' => ['message' => 'Empty response']
         ]);
     }
 

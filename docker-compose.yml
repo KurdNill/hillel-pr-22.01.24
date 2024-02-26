@@ -15,20 +15,20 @@ services:
     build:
       context: .docker/php
     restart: always
+    ports:
+      - "8081:80"
     volumes:
       - .:/var/www/html
       - ./xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-    ports:
-      - "80:80"
     networks:
       - php_advanced
   mysql_db:
     image: "mysql:8"
     restart: always
+    ports:
+      - "33061:3306"
     volumes:
       - "my_db_volume:/var/lib/mysql"
-    ports:
-      - "33062:3306"
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: php_advanced

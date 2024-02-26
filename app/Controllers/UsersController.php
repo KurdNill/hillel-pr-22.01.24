@@ -6,7 +6,7 @@ use Core\Controller;
 
 class UsersController extends Controller
 {
-    public function edit(int $id): array
+    public function edit(int $id)
     {
         return $this->response(body: ['id' => $id]);
     }

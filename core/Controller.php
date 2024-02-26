@@ -2,7 +2,7 @@
 
 namespace Core;
 
-class Controller
+abstract class Controller
 {
     public function before(string $action, array $params = []): bool
     {
@@ -11,7 +11,7 @@ class Controller
 
     public function after(string $action) {}
 
-    protected function response(int $code = 200, array $body = [], array $errors = []): array
+    protected function response(int $code = 200, array $body = [], array $errors = [])
     {
         return compact('code', 'body', 'errors');
     }

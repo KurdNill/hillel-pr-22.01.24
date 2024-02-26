@@ -1,3 +1,10 @@
 .idea
 xdebug.ini
 /vendor/
+.env
+app/Controllers/BaseApiController.php
+app/Controllers/FoldersController.php
+app/Models/Folder.php
+app/Validators/Auth/AuthValidator.php
+app/Validators/Folders
+enums/SQL.php
