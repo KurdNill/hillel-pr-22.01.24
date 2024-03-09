@@ -3,6 +3,7 @@
 declare(strict_types=1);
 use Core\Router;
 use function Core\json_response;
+
 define('BASE_DIR', dirname(__DIR__));
 
 require_once BASE_DIR . '/vendor/autoload.php';

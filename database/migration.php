@@ -53,6 +53,7 @@ class Migration
             if ($query->execute()) {
                 $this->logIntoMigrations($migration);
                 $this->log("- [$migration] DONE!");
+                $query->closeCursor();
             }
         }
 
@@ -64,6 +65,7 @@ class Migration
         $query = db()->prepare("INSERT INTO `migrations`(`name`) VALUES (:migration)");
         //$query->bindParam('migration', $migration);
         $query->execute(['migration' => $migration]);
+        $query->closeCursor();
     }
 
     protected function isMigrationsWasRun(string $migration): bool
@@ -71,7 +73,12 @@ class Migration
         $query = db()->prepare("SELECT `id` FROM `migrations` WHERE `name` = :name");
 //        $query->bindParam('name', $migration);
         $query->execute(['name' => $migration]);
-        return (bool) $query->fetch();
+
+        $result = (bool) $query->fetch();
+
+        $query->closeCursor();
+
+        return $result;
     }
 
     protected function createMigrationTable(): void
@@ -82,7 +89,8 @@ class Migration
         print_r(match ($query->execute()) {
                 true => '- Migration table was created (or already exists)',
                 false => '- Failed'
-            } . PHP_EOL);
+        } . PHP_EOL);
+        $query->closeCursor();
         $this->log('Finished migration table query');
     }
 
@@ -97,6 +105,3 @@ class Migration
         print_r("---- $text ----" . PHP_EOL);
     }
 } new Migration;
-
-$query = db()->prepare("UPDATE `migrations` SET `id` = 6 WHERE `id` = 7");
-$query->execute();

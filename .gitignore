@@ -4,7 +4,11 @@ xdebug.ini
 .env
 app/Controllers/BaseApiController.php
 app/Controllers/FoldersController.php
+app/Controllers/NotesController.php
+app/Controllers/SharedNotesController.php
 app/Models/Folder.php
-app/Validators/Auth/AuthValidator.php
+app/Models/Note.php
+app/Models/SharedNote.php
 app/Validators/Folders
-enums/SQL.php
+app/Validators/Notes
+app/Validators/SharedNoteValidator.php

@@ -21,7 +21,7 @@ abstract class Model
                 continue;
             }
 
-            $data[$prop->getName()] = $vars[$prop->getName()] ? $vars[$prop->getName()] : null;
+            $data[$prop->getName()] = $vars[$prop->getName()] ?? null;
         }
         return $data;
     }

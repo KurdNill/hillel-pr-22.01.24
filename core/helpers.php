@@ -1,5 +1,7 @@
 <?php
 namespace Core;
+use ReallySimpleJWT\Token;
+
 function json_response(int $code = 200, array $data = []): string
 {
     header_remove();
@@ -11,6 +13,7 @@ function json_response(int $code = 200, array $data = []): string
         200 => '200 OK',
         400 => '400 Bad Request',
         403 => '403 Forbidden',
+        404 => '404 Not Found',
         405 => '405 Method Not Allowed',
         422 => '422 Unprocessable Entity',
         500 => '500 Internal Server Error'
@@ -42,24 +45,30 @@ function requestBody(): array
     return $data;
 }
 
-//function getToken()
-//{
-//    $headers = apache_request_headers();
-//
-//    if (!isset($headers['Authorization'])) {
-//        throw new \Exception('');
-//    }
-//
-//    $token = str_replace('Bearer', '', $headers['Authorization']);
-//
-//    if (!Token::validateExpiration()) {
-//
-//    }
-//
-//    return $token;
-//}
+function getAuthToken(): string
+{
+    $headers = apache_request_headers();
 
-//function authId()
-//{
-//    $token = Token::getPayload(getAuthToken());
-//}
+    if (empty($headers['Authorization'])) {
+        throw new \Exception('The request should contain an auth token', 422);
+    }
+
+    $token = str_replace('Bearer ', '', $headers['Authorization']);
+
+    if (!Token::validateExpiration($token)) {
+        throw new \Exception('Token is out of date', 422);
+    }
+
+    return $token;
+}
+
+function authId(): int
+{
+    $token = Token::getPayload(getAuthToken());
+
+    if (empty($token['user_id'])) {
+        throw new \Exception('Token structure is invalid', 422);
+    }
+
+    return $token['user_id'];
+}

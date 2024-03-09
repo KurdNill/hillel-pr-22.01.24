@@ -11,7 +11,7 @@ class Router
     use HttpMethods;
 
     protected static Router|null $instance = null;
-    protected array $routes = [], $params = [];
+    protected array $routes = [], $params = []; //['get' => []. 'post' => []]
     protected string $currentRoute;
     protected array $convertTypes = [
         'd' => 'int',
