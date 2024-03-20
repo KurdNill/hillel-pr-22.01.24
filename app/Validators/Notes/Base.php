@@ -68,7 +68,7 @@ class Base extends BaseValidator
     protected function checkTitle(array $fields): bool
     {
         if (isset($fields['title'])) {
-            return preg_match('/[\w\s\(\)\-]{3,}/i', $fields['title']);
+            return preg_match('/[^\w\s\(\)\-]/i', $fields['title']) === 0;
         }
 
         return true;
@@ -77,6 +77,7 @@ class Base extends BaseValidator
     protected function checkContent(array $fields): bool
     {
         if (isset($fields['content'])) {
+            preg_replace("/<script.*?<\/script>/", '', $fields['content']);
             return preg_match('/.+/i', $fields['content']);
         }
 
