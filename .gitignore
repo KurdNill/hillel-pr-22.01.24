@@ -1,10 +1,3 @@
 .idea
-xdebug.ini
 /vendor/
 .env
-app/Controllers/NotesController.php
-app/Controllers/SharedNotesController.php
-app/Models/Note.php
-app/Models/SharedNote.php
-app/Validators/Notes
-app/Validators/SharedNoteValidator.php
