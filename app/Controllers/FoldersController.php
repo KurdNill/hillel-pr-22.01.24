@@ -4,8 +4,8 @@ namespace App\Controllers;
 
 use App\Validators\Folders\CreateFolderValidator;
 use App\Models\Folder;
-//use App\Models\Note;
-//use App\Models\sharedNote;
+use App\Models\Note;
+use App\Models\sharedNote;
 use App\Validators\Folders\UpdateFolderValidator;
 use function Core\{
     requestBody,
@@ -89,32 +89,32 @@ class FoldersController extends BaseApiController
         return $this->response();
     }
 
-//    public function notes(int $folder_id)
-//    {
-//        $folder = Folder::find($folder_id);
-//
-//        if (!is_null($folder->user_id) && $folder->user_id !== authId()) {
-//            return $this->response(403, errors: ['message' => 'This resource is forbidden for you']);
-//        }
-//
-//        $notes = match($folder->title) {
-//            Folder::GENERAL_FOLDER => Note::where('folder_id', value: $folder_id)
-//                ->and('user_id', value: authId())->get(),
-//            Folder::SHARED_FOLDER => Note::select([Note::$tableName . '.*'])->join(SharedNote::$tableName, [
-//                [
-//                    'left' => 'notes.id',
-//                    'operator' => '=',
-//                    'right' => SharedNote::$tableName . '.note_id'
-//                ],
-//                [
-//                    'left' => authId(),
-//                    'operator' => '=',
-//                    'right' => SharedNote::$tableName . '.user_id'
-//                ]
-//            ], 'INNER')->get(),
-//            default => Note::where('folder_id', value: $folder_id)->get()
-//        };
-//
-//        return $this->response(body: $notes);
-//    }
+    public function notes(int $folder_id)
+    {
+        $folder = Folder::find($folder_id);
+
+        if (!is_null($folder->user_id) && $folder->user_id !== authId()) {
+            return $this->response(403, errors: ['message' => 'This resource is forbidden for you']);
+        }
+
+        $notes = match($folder->title) {
+            Folder::GENERAL_FOLDER => Note::where('folder_id', value: $folder_id)
+                ->and('user_id', value: authId())->get(),
+            Folder::SHARED_FOLDER => Note::select([Note::$tableName . '.*'])->join(SharedNote::$tableName, [
+                [
+                    'left' => 'notes.id',
+                    'operator' => '=',
+                    'right' => SharedNote::$tableName . '.note_id'
+                ],
+                [
+                    'left' => authId(),
+                    'operator' => '=',
+                    'right' => SharedNote::$tableName . '.user_id'
+                ]
+            ], 'INNER')->get(),
+            default => Note::where('folder_id', value: $folder_id)->get()
+        };
+
+        return $this->response(body: $notes);
+    }
 }
